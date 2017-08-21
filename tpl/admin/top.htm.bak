@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title><?=CFG_SITE_NAME;?></title>
+
+<link href="./tpl/admin/css/main.css?s=<?=CFG_CURR_TIME;?>" rel="stylesheet" type="text/css" />
+
+<link href="./tpl/admin/css/weui.min.css?s=<?=CFG_CURR_TIME;?>" rel="stylesheet" type="text/css" />
+
+<link href="./tpl/admin/js/artDialog/skins/default.css?s=<?=CFG_CURR_TIME;?>" rel="stylesheet" type="text/css" />
+
+<script src="./tpl/admin/js/jquery-1.10.1.js?s=<?=CFG_CURR_TIME;?>"></script>
+
+<script src="./tpl/admin/js/artDialog/jquery.artDialog.js?s=<?=CFG_CURR_TIME;?>"></script>
+
+<script src="./tpl/admin/js/artDialog/artDialog.plugins.js?s=<?=CFG_CURR_TIME;?>"></script>
+
+<script src="./tpl/admin/js/jsInit.js?s=<?=CFG_CURR_TIME;?>"></script>
+
+</head>
+
+<body>
+
+<div class="content">
+
+	<div id="header">
+
+	<!--<div class="admin_logo"><a href="/admin.html"><?=CFG_SITE_NAME;?></a></div>-->
+		<div class="right" style="display:none" id="xianshi">
+			<div id="quik_link"></div>
+            <div style="padding:1px"><a href="/admin.html"><img src="./tpl/admin/images/nfdw.png" height="33px" style="float:left"/></a>  </div>
+              
+            <div id="loading"><img src="./tpl/admin/images/loader.gif" /></div>
+          
+            <div style="float:right">欢迎你：<?=isset($_SESSION["admin_info"]["admin_name"])?$_SESSION["admin_info"]["admin_name"]:"";?> &nbsp;&nbsp;&nbsp;<div style="width:80px;height:25px;background-color:#3879D9;float:right;border-radius:10%;text-aligin:center;line-height:28px;margin-right:10px
+"><a href="admin-logOut.html"  style="color:white;">退出登录</a></div></div>
+
+		</div>
+
+	</div>
+    <div style="background-color:white"><marquee><p style="color:#1c114c;font-family:Georgia"><?=CFG_SITE_NAME;?></p></marquee></div>
+
+
+    <div id="frame_left" style="display:none">
+        <div style="width:260px;height:5px;background-color:#1C114C"></div>
+        <?php foreach(admin::menus() as $k=>$v){ ?>
+        <ul class="list" >
+            <li class="title"><?=$k;?></li>
+            <?php foreach($v["methods"] as $k1=>$v1){ ?>
+          <li class="mext_next" id="menu_<?=$k1;?>" <?=((METHOD=="product")&&($mod_key=="route")&&($act=="list"))?'class="curr"':'';?>><a href="admin-<?=$v['mod'];?>-<?=$k1;?>.html"><?=$v1;?></a></li>
+            <?php } ?>
+        </ul>
+        <?php } ?>
+        <div style="width:260px;height:5px;background-color:#1C114C;position:fixed;bottom:0;"></div>
+    </div>
+    <div id="frame_right">
+<script>
+//判断登录，登录显示菜单
+var session='<?php echo $_SESSION["admin_info"]["admin_name"];?>';
+if(session){
+$('#frame_left').toggle();
+$("#xianshi").toggle();
+}
+var mod_key="<?=$mod_key;?>";
+$(".title").closest("ul").find(":not(.title)").toggle();
+$(".mext_next").click(function(){
+    $(this).find("div").css("background-color","blue");
+});
+$(document).ready(function () {  
+        //鼠标移入变红色  
+    $(".title").mouseover(function (){  
+        $(this).css("background-color", "#1C114C");  
+         $(this).css("color", "white");
+    });         //鼠标移除变黑色  
+    $(".title").mouseout(function () {  
+        $(this).css("background-color", "white"); 
+        $(this).css("color", "black"); 
+    });  
+    $(".mext_next").mouseover(function (){  
+        $(this).css("background-color", "#3879D9"); 
+         $(this).find("a").css("color", "white"); 
+         
+    });         //鼠标移除变黑色  
+    $(".mext_next").mouseout(function () {  
+        $(this).css("background-color", "white");
+        $(this).find("a").css("color", "black");   
+    });  
+
+});
+</script>

@@ -1,0 +1,36 @@
+<div class="right_content">
+	<a href="admin-model-add.html?product_id=<?=$product_id;?>" class="button" id="add_model">+添加模型</a>
+<?php if($re){ ?>
+<br />
+<table width="98%" class="content_table" border="0" cellspacing="1" cellpadding="5" align="center">
+  <tr id="title">
+    <td width="150" height="22">名称</td>
+    <td width="150">标识</td>
+   <!-- <td width="100">内容数量</td>-->
+    <td width="350">最后更新</td>
+    <td>操作</td>
+  </tr>
+  <?php foreach($re as $k=>$v){ ?>
+  <tr id="memo">
+  	<td><?=$v['mod_name'];?></td>
+    <td><?=$v['mod_key'];?></td>
+    <!--<td><?=$v["product_number"];?></td>-->
+    <td><?=date('Y-m-d H:i:s',$v["last_update_time"])."/".$v["last_update_name"];?></td>
+    <td><a href="admin-model-attrs_list-<?=$v['mod_id'];?>.html?product_id=<?=$product_id;?>" id="attrs_list" class="attrs_set" style="background-color:#32c170;color:white">字段设置</a> &nbsp; <!--<a href="admin-model-privs_list-<?=$v['mod_id'];?>.html" id="privs_list" class="privs_set">权限设置</a> &nbsp; --><div style="width:50px;height:20px;background-color:#3879D9;"><a href="admin-model-add-<?=$v['mod_id'];?>.html" class="ajaxDialog" style="color:white;padding:4px 10px 4px 10px;">编辑</a>&nbsp; </div></div>&nbsp; <div style="width:50px;height:20px;background-color:red;"><a href="admin-model-del-<?=$v['mod_id'];?>.html" class="ajaxDel"  style="color:white;padding:4px 10px 4px 10px;">删除</a></div></td>
+  </tr>
+  <?php } ?>
+</table>
+<br />
+<?php }else{ ?><p />
+暂无模型!
+<?php } ?>
+</div>
+<script>
+$(function(){
+	
+    $("#add_model").ajaxDialog();
+	$(".attrs_set").ajaxDialog({"id":"attrs_list"});
+    $(".privs_set").ajaxDialog({"id":"privs_list"});
+   
+});
+</script>

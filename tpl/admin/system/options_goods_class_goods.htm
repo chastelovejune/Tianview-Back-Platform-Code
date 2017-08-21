@@ -1,0 +1,98 @@
+<?php foreach($options as $k=>$v){ ?>    <input class="options" pid="<?=$v[$mod.'_id'];?>" label="<?=$v[$mod.'_name'];?>" type="<?=$type=='radio'?'radio':'checkbox';?>" name="<?=$attr;?>" value="<?=$v[$mod.'_id'];?>" /><?=$v[$mod."_name"];?> <?php if($have_pid){ ?><a style="cursor:pointer;" label="<?=$v[$mod.'_name'];?>" name="<?=$attr;?>" value="<?=$v[$mod.'_id'];?>" class="check_it">【选中】</a><?php } ?>&nbsp; <?php } ?>
+<?php if($type=="checkbox"){ ?><input type="button" value="确定" name="option_submit" id="option_submit" /><?php } ?>
+<script>
+var keys=INFO.ajaxObj.attr('id').split("_");
+var key=keys.pop();
+var obj=null;
+var from="<?=$from;?>";
+$(function(){
+	
+	//点击单选
+	$(".options[type=radio]").click(function(){
+		
+		url="admin-options_next-<?=$key;?>-<?=$mod;?>-<?=$attr;?>-<?=$type;?>-"+$(this).attr("pid")+".html";
+		url_load="admin-options-<?=$key;?>-<?=$mod;?>-<?=$attr;?>-<?=$type;?>-"+$(this).attr("pid")+".html?from="+from;
+		//location.replace(url);
+		obj=$(this);
+		$.get(url,function(rs){
+			if(rs.isOk=="1")
+			{
+				//alert('asfaf');
+				CURR_DIALOG.content(url_load);
+			}
+			else
+			{
+				if(obj.attr("type")=="radio")
+				{
+					//alert('adfad');
+					//alert(obj.attr("label"));
+					$("#attr_<?=$key;?>_"+key).val(obj.val());
+					$("#attr_<?=$key;?>_name_"+key).val(obj.attr("label"));
+					$("#attr_<?=$key;?>_label_"+key).html(obj.attr("label"));
+					load_class_attrs(obj.val());
+					$(".d-close").click();
+					//CURR_DIALOG.close();
+				}
+			
+			}
+			
+		},"json");
+	
+	});
+	
+	//点击选中
+	$(".check_it").click(function(){
+		
+		obj=$(this);
+		//alert(obj.attr("value"));
+		$("#attr_<?=$key;?>_"+key).val(obj.attr("value"));
+		$("#attr_<?=$key;?>_name_"+key).val(obj.attr("label"));
+		$("#attr_<?=$key;?>_label_"+key).html(obj.attr("label"));
+		load_class_attrs(obj.attr("value"));
+		$(".d-close").click();
+	
+	});
+	
+	//点击确认
+	$("#option_submit").click(function(){
+		
+		v=[];
+		n=[];
+		
+		$(".options:checked").each(function(){
+			
+			v.push($(this).val());
+			n.push($(this).attr("label"));
+			
+		});
+		//alert(n.join(","));
+		$("#attr_<?=$key;?>_"+key).val(v.join(","));
+		$("#attr_<?=$key;?>_name_"+key).val(n.join(","));
+		$("#attr_<?=$key;?>_label_"+key).html(n.join(","));
+		//load_class_attrs(obj.val());
+		CURR_DIALOG.close();
+		//$("#attr_option_").click();
+		
+		if(typeof(optionsSubmitClick)=="function")
+		{
+			optionsSubmitClick();
+		}
+		
+	});
+	
+});
+
+//按分类，载入属性
+function load_class_attrs(cid)
+{
+	$.get("admin-get_goods_class_attrs-"+cid+".html?goods_id="+goods_id,function(memo){
+		if(!$("#tr_goods_class_attrs").size())
+			$("#option_tr_class_id_"+key).after("<tr><td  class='attr_left' valign='top' width='90'>属性</td><td class='attr_right' valign='top'  id='tr_goods_class_attrs'>"+memo+"</td></tr>");
+		else
+			$("#tr_goods_class_attrs").html(memo);
+	});
+}
+
+</script>
+		
+		

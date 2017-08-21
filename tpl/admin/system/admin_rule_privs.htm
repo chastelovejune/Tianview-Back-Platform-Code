@@ -1,0 +1,56 @@
+<form action="admin-product-admin_rule-privs-<?=$id;?>.html" id="rule_privs_set">
+<table width="450"  border="0" cellspacing="1" cellpadding="5">
+  <tr>
+    <td colspan="2" style="text-align:right;"></td></tr><tr><td><table width="150" border="0" cellspacing="1" cellpadding="5">
+  <?php foreach($models as $k=>$v){ ?><tr>
+    <td align="left" title="点击选择属性" class="mods_td"  mod_id="<?=$v['mod_id'];?>" style="cursor:pointer; height:35px; height:35px; border-bottom:1px solid #ddd; "><input type="checkbox" <?=isset($rule_privs[$v['mod_key']])?"checked":"";?> name="mods[<?=$v['mod_id'];?>]" value="<?=$v['mod_id'];?>" class="mods" mod_id="<?=$v['mod_id'];?>" id="mods_<?=$v['mod_id'];?>" />&nbsp;<input type="hidden" name="mods_key[<?=$v['mod_id'];?>]" value="<?=$v['mod_key'];?>" id="mods_<?=$v['mod_id'];?>" /> <?=$v['mod_name'];?>&nbsp;</td>
+  </tr>
+  <?php } ?>
+</table>
+</td>
+    <td id="privs_list" valign="top"><?php foreach($models as $k=>$v){ ?>
+    <div id="priv_div_<?=$v['mod_id'];?>" style="display:none;" class="privs_div">
+        <table width="150" border="0" cellspacing="1" cellpadding="5">
+          <?php foreach($v["privs"] as $k=>$v){ ?><tr>
+            <td align="left" class="attrs" style="cursor:pointer; height:35px; height:35px; border-bottom:1px solid #ddd; " mod_key="<?=$v['mod_key'];?>" priv_key="<?=$v['key'];?>"><input type="checkbox" <?=isset($rule_privs[$v['mod_key']][$v['key']])?"checked":"";?> value="<?=$v['priv_id'];?>" mod_id="<?=$v['mod_id'];?>" name="privs[<?=$v['mod_id'];?>][<?=$v['priv_id'];?>]" id="privs_<?=$v['priv_id'];?>" /> &nbsp; <input type="hidden" value="<?=$v['name'];?>" name="privs_name[<?=$v['priv_id'];?>]" id="privs_a<?=$v['priv_id'];?>" /> &nbsp; <input type="hidden" value="<?=$v['key'];?>" name="privs_key[<?=$v['priv_id'];?>]" id="privs<?=$v['priv_id'];?>" /> &nbsp;  <?=$v['name'];?></td>
+          </tr>
+          <?php } ?>
+        </table>
+    </div>
+<?php } ?></td>
+  </tr>
+</table>
+<input type="button" value="确定" name="option_submit" id="option_submit" />
+</form>
+<script>
+$(function(){
+	
+	//单击处理
+	$(".mods").click(function(){
+		//alert($(this).attr("mod_id"));
+		//alert($("#priv_div_"+$(this).attr("mod_id")).find(":checkbox").size());
+		$("#priv_div_"+$(this).attr("mod_id")).find("input[type=checkbox]").prop("checked",$(this).prop("checked"));
+		$(".privs_div").hide();
+		$(".mods").css("background","#fff");
+		$(this).css("background","#eee");;
+		$("#priv_div_"+$(this).attr("mod_id")).show();
+	
+	});
+	
+	//单击处理
+	$(".mods_td").click(function(){
+		//alert($(this).attr("mod_id"));
+		//alert($("#priv_div_"+$(this).attr("mod_id")).find(":checkbox").size());
+		//$("#priv_div_"+$(this).attr("mod_id")).find(":checkbox").prop("checked",!$(this).prop("checked"));
+		$(".privs_div").hide();
+		$(".mods_td").css("background","#fff");
+		$(this).css("background","#eee");;
+		$("#priv_div_"+$(this).attr("mod_id")).show();
+	
+	});
+	
+	//$(".mods").eq(0).click();
+	$("#option_submit").ajaxSubmit();
+
+});
+</script>

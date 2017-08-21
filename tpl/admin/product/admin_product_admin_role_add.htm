@@ -1,0 +1,125 @@
+<div class="right_content">
+<link rel="stylesheet" href="/tpl/admin/js/editor/themes/default/default.css" />
+<script charset="utf-8" src="/tpl/admin/js/editor/kindeditor-min.js"></script>
+<script charset="utf-8" src="/tpl/admin/js/editor/lang/zh_CN.js"></script>
+	<br />
+  <form action="admin-product-admin_role-add.html">
+  <table border='0' cellspacing='5' cellpadding='3' width='650' class='product_add'>
+    <tr id='option_tr_admin_role_name'>
+      <td class='attr_left' valign='top' width='90'>角色名称</td>
+      <td class='attr_right' valign='top'>
+        <input type='text' reg='' tip='' placeholder='请输入角色名称' name='role_name' id='attr_admin_role_admin_role_name' value='<?php echo $re_updata["admin_role_name"] ?>'>
+      </td>
+    </tr>
+     <tr id='option_tr_privs_id_string'>
+      <td class='attr_left' valign='top' width='90'>请勾选能操作的权限</td>
+      <td class='attr_right' valign='top'>
+     <?php 
+//var_dump($arr);
+     foreach($arr as $k => $v){
+      //var_dump($k);
+    //  var_dump($v);
+       echo '<div style="border:1px solid #999999;"></br>
+      <input type="checkbox" class="checkbox_title" name="model[]" value="'.$k.'"/>'.$k.'
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+          foreach($v as $kk => $vv) { 
+          //  var_dump($vv);
+       echo '<label ><input type="checkbox" class="checkbox" name="checkbox[]" value="'.$vv["admin_role_privs_id"].'"/></label>'.$vv["privs_name"].'&nbsp;&nbsp';
+     }
+       echo '
+     </div>
+   </div>
+   </br> ';
+ 
+     }
+      ?>
+ 
+   
+  <input type="hidden" name="id" value=<?php echo $id ?>/>
+    <input type="button" id="button1"value="全部选择"/>&nbsp;&nbsp;
+         <input type="button" id="button2"value="取消选择"/>
+     
+      </td>
+
+    </tr>
+  </table> 
+  <br />
+  <input type="button" class="button" value="提交" id="do_button" /></form><br />
+</div>
+<script>
+//把PHP数组传给JS   把富有的权限选择
+
+  var data=<?php echo $privs_id_string; ?>;//取出权限的ID集
+  var privs="<?=isset($product)?$product['privs']:'';?>";
+$(function(){
+ // console.log(data);
+ // console.log(privs);
+/*$('.checkbox').each(function(){
+                this.checked = false;
+            });
+ $('.checkbox_title').each(function(){
+                this.checked = false;
+            });*/
+  for(var i in data){
+    $(".checkbox").each(function(){
+      if($(this).val()==data[i]){
+        $(this).attr("checked",'true');
+        $(this).parent().prev().attr("checked",'true');
+      }
+    });
+  }
+/*全部被选中*/
+$('#button1').click(function(){
+  $(".checkbox_title").each(function(){
+                this.checked = true;
+            });
+  $(".checkbox").each(function(){
+                this.checked = true;
+            });
+});
+$('#button2').click(function(){
+  $('.checkbox_title').each(function(){
+                this.checked = false;
+            });
+ $('.checkbox').each(function(){
+                this.checked = false;
+            });
+});
+$('.checkbox_title').click(function(){
+  if(this.checked ==true){
+     $(this).next().find("input").each(function(){
+                this.checked = true;
+            });
+}else{
+     $(this).next().find("input").each(function(){
+                this.checked = false;
+                 });
+}
+});
+
+
+
+
+
+	/*如果是超级管理员，不能设置管理员组*/
+	if(privs=="privs_all")
+	{
+		$("#attr_rule").closest("tr").hide();
+	}
+	fs={};
+	
+	fs.isOk=function(rs){
+		
+		if(rs.isOk)
+		{
+			location.replace('admin-product-admin_role-list.html');
+		}
+		else
+			alert(rs.msg);
+	
+	};
+	
+	$("#do_button").ajaxSubmit(fs);
+
+});
+</script>

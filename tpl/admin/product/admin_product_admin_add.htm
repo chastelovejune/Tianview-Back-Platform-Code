@@ -1,0 +1,33 @@
+<div class="right_content">
+<link rel="stylesheet" href="/tpl/admin/js/editor/themes/default/default.css" />
+<script charset="utf-8" src="/tpl/admin/js/editor/kindeditor-min.js"></script>
+<script charset="utf-8" src="/tpl/admin/js/editor/lang/zh_CN.js"></script>
+	<br /><form action="admin-product-<?=$mod_key;?>-add-<?=$id;?>.html"><?=$options;?><br /><input type="button" class="button" value="提交" id="do_button" /></form><br />
+</div>
+<script>
+var privs="<?=isset($product)?$product['privs']:'';?>";
+$(function(){
+	
+	/*如果是超级管理员，不能设置管理员组*/
+	if(privs=="privs_all")
+	{
+		$("#attr_rule").closest("tr").hide();
+	}
+	
+	fs={};
+	
+	fs.isOk=function(rs){
+		
+		if(rs.isOk)
+		{
+			location.replace('admin-product-<?=$mod_key;?>-list.html');
+		}
+		else
+			alert(rs.msg);
+	
+	};
+	
+	$("#do_button").ajaxSubmit(fs);
+
+});
+</script>

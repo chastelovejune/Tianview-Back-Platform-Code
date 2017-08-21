@@ -1,0 +1,20 @@
+<table width="150" border="0" cellspacing="1" cellpadding="5">
+  <?php foreach($privs as $k=>$v){ ?><tr>
+    <td align="left" class="attrs" style="cursor:pointer; height:35px; height:35px; border-bottom:1px solid #ddd; " mod_key="<?=$v['mod_key'];?>" priv_key="<?=$v['key'];?>"><?=$v['name'];?>&nbsp;</td>
+  </tr>
+  <?php } ?>
+</table>
+<script>
+$(function(){
+	
+	//单击处理
+	$(".attrs").click(function(){
+		
+		$("#gl").prop("checked",true);
+		$("#options").val("type="+$("input[name=gl_type]:checked").val()+"&mod="+$(this).attr("mod_key")+"&attr="+$(this).attr("attr_key"));
+		CURR_DIALOG.close();
+	
+	});
+
+});
+</script>

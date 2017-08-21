@@ -1,0 +1,92 @@
+<div class="right_content">
+<label style="width:20px;height:20px;background-color:#3879D9;"><a href="admin-product-<?=$mod_key;?>-add.html<?=$query_str?'?'.$query_str:'';?>" class="button" style="color:white;padding:4px 10px 4px 10px;">添加</a></label>
+<?php if($products){ ?>
+<br />
+<table width="100%"  class="content_table" border="1" bordercolor=＂#000000＂ cellspacing="1" cellpadding="5" align="center">
+  <tr id="title">
+
+    <td height="22">ID</td>
+    <td height="22">角色</td>
+    <td height="22">具有权限</td>
+    <td height="22">增加时间</td>
+    <td height="22">更新时间</td>
+    <td height="22">排序</td>
+    <td>操作</td>
+  </tr>
+  <tr id="demo">
+  <!--这里要取出权限的名称-->
+  <?php
+    require_once "lib/model.php";
+    $model=new model;
+    //取出权限集
+    for($j=0;$j<count($products);$j++){
+      $privs[$j]=$products[$j]['privs_id_string'];
+    }
+  
+    foreach ($privs as $key => $value) {//遍历各个管理员的权限
+          $privs_id_array=explode(",", $value);//把字符串都转数组
+         // var_dump($privs_id_array);
+         for($n=0;$n <count($privs_id_array); $n++) { //去掉权限数组的第一层
+           for($m=0;$m<count($privs_id_array[$n]); $m++) {//去掉数组第二层
+            if(!empty($privs_id_array[$n][$m])){
+             // echo $privs_id_array[$n];
+             // echo "</br>";
+              $sql="select privs_name from admin_role_privs where admin_role_privs_id=".$privs_id_array[$n];
+              $result=$model->db->query($sql);
+             //var_print($result[0]['privs_name']);
+            //  var_dump($result[0]['privs_name']);
+             $privs_name[$key][]=$result[0]['privs_name'];
+           }
+          }
+        }
+    }
+    unset($privs);
+ //var_dump($privs_name);
+   foreach ($privs_name as $k1 => $v1) {
+      $res=array_unique($v1);
+     $privs[]=implode(",", $res);
+   }
+    ?>
+  <?php //print_r($products);
+ // var_print($privs);
+    for($i=0;$i<count($products);$i++){
+       echo "<tr id='demo'>";
+        echo "<td>".$products[$i]['admin_role_id']."</td>";
+        echo "<td>".$products[$i]['admin_role_name']."</td>";
+        echo "<td>".$privs[$i]."</td>";
+        echo "<td>".date('Y-m-d',$products[$i]['add_time'])."</td>";
+        echo "<td>".date('Y-m-d',$products[$i]['last_update_time'])."</td>";
+        echo '<td><input type="input" size="1" class="is_sort" data-id='.$products[$i]['admin_role_id'].' name="is_sort" placeholder="未设" value='.$products[$i]['sort_by'].' >&nbsp;<input type="button" class="set_sort" value="更新" style="background-color:#32c170;color:white"/></td>';
+       
+         echo '<td><label style="width:20px;height:20px;background-color:#3879D9;"><a href="admin-product-'.$products[$i]['mod_key'].'-add-'.$products[$i]['admin_role_id'].'.html" style="color:white;padding:4px 10px 4px 10px;">编辑</a></label>&nbsp; <label style="width:20px;height:20px;background-color:red;"><a href="admin-product-'.$products[$i]['mod_key'].'-del-'.$products[$i]['admin_role_id'].'.html" class="ajaxDel" style="color:white;padding:4px 10px 4px 10px;">删除</a></label></td>';
+        echo "</tr>";
+        //echo "<td><input type='button' value="分配权限"></td>"
+      }
+      ?>
+    
+  </tr>
+
+</table>
+<br />
+<?php }else{ ?><p />
+暂无数据!
+<?php } ?></div>
+<script>
+var mod="<?=$mod_key;?>";
+$(function(){
+	
+	$(".set_sort").click(function(){
+		var obj=$(this).prev("input");
+    if(typeof(obj.data("id"))=='number'){
+		$.get("admin-product-"+mod+"-set_sort-"+obj.data("id")+".html?sort="+obj.val(),function(rs){
+			alert(rs.msg);
+		},"json");
+  }else{
+    alert("你输入的格式不正确，请输入数字!");
+  }
+	
+	});
+
+});
+
+</script>

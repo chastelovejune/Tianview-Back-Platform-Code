@@ -1,0 +1,48 @@
+<div class="right_content">
+<center><div style="width:60px;height:25px;background-color:#3879D9;margin-top:10px;border-radius:10%;line-height:25px;text-aligin:center";><a href="admin-product-<?=$mod_key;?>-add.html<?=$query_str?'?'.$query_str:'';?>"  style="color:white;padding:5px 10px 5px 10px;text-aligin:center;">添加</a></div></center>
+<?php if($products){ ?>
+<br />
+<table width="100%" class="content_table" border="0" cellspacing="1" cellpadding="5" align="center">
+  <tr id="title">
+
+    <?php foreach($titles_new as $k=>$v){ ?><td height="22"><?=$v;?></td><?php } ?>
+    <td>操作</td>
+  </tr>
+  <?php foreach($products as $k=>$v){ ?>
+  <tr id="memo">
+  	<?php foreach($cols as $k1=>$v1){ ?>
+    <?php if($v1=="sort_by"){ continue; } ?>
+  	<td>
+        <?php if(($v1=="add_time")||($v1=="last_update_time")){ ?>
+        <?=date("Y-m-d H:i:s",$v[$v1]);?> 
+        <?php }else{ ?><?=$v[$v1];?><?php } ?>
+    </td>
+  	<?php } ?>
+     <td><input type="input" size="1" class="is_sort" data-id='<?=$v[$mod_key."_id"];?>' name="is_sort" placeholder="未设" value="<?=$v['sort_by'];?>" />&nbsp;<input type="button" class="set_sort" value="更新" style="background-color:#32c170;color:white;"/></td>
+    <td><div style="width:50px;height:22px;background-color:#3879D9;float:left;border-radius:10%;margin-right:10px;margin-left:12px
+"><a href="admin-product-<?=$mod_key;?>-add-<?=$v[$mod_key."_id"];?>.html" style="color:white;padding:4px 10px 4px 10px;">编辑</a></div>&nbsp; <div style="width:50px;height:22px;background-color:red;float:left;border-radius:10%"><a href="admin-product-<?=$mod_key;?>-del-<?=$v[$mod_key."_id"];?>.html" class="ajaxDel" style="color:white;padding:4px 10px 4px 10px;">删除</a></div></td>
+  </tr>
+  <?php } ?>
+</table>
+<br />
+<?php }else{ ?><p />
+暂无数据!
+<?php } ?></div>
+<script>
+var mod="<?=$mod_key;?>";
+$(function(){
+	
+	$(".set_sort").click(function(){
+		
+		obj=$(this).prev("input");
+		$.get("admin-product-"+mod+"-set_sort-"+obj.data("id")+".html?sort="+obj.val(),function(rs){
+			
+			alert(rs.msg);
+			
+		},"json");
+	
+	});
+
+});
+
+</script>

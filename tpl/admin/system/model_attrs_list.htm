@@ -1,0 +1,51 @@
+<a href="admin-model-attrs_add-<?=$model_id;?>.html?product_id=<?=$product_id;?>" class="button ajaxDialog" id="attr_add">+添加属性</a>
+<?php if($attrs){ ?>
+          <div id="class_list" style="line-height:25px; overflow:auto; height:450px; width:550px;"><?php  foreach($attrs as $c){ ?>
+          <li style="line-height:35px; padding-left:15px; list-style:none; border-bottom:1px solid #eee; width:99%; margin:auto;"><center style="width:20px; color:#999; float:left;"><?=$c['attr_id'];?></center> &nbsp;  &nbsp; <?=$c['name'];?>(<?=$c['key'];?>)</span>&nbsp;<!--<label style="width:80px; text-align:left; display:inline-block;"><input type="text" id="sort_val_<?=$c['attr_id'];?>" size="5" style="width:25px; height:22px; line-height:22px;" value="<?=$c['sort'];?>" name="set_sort_<?=$c['attr_id'];?>"  /><input type="button" id="sort_set_<?=$c['attr_id'];?>" class="sort_set" style="height:27px; line-height:27px; width:35px; background:#fff; color:#000;  margin:5px; line-height:25px; padding:0px; border:1px solid #ccc; border-radius:5px; background:#eee; cursor:pointer;" name="set_sort" value="排序" /></label>--><label class="op" style="width:90px;  color:#999; float:right;"><a href="admin-model-attrs_add-<?=$model_id;?>.html?attr_id=<?=$c['attr_id'];?>" title="编辑" class="selfDo editAttr">编辑</a>&nbsp; <a href="admin-model-attrs_del-<?=$model_id;?>.html?attr_id=<?=$c['attr_id'];?>" class="ajaxDel">删除</a></label></li><?php } ?></div><?php }else{ ?><p /><div style="text-align:center;">暂无属性!</div><?php } ?>
+<script>
+$(function()
+{
+	$("#attr_add,.editAttr").ajaxDialog({"id":"attrs_add"});
+	
+	//设置排序
+	$(".sort_set").click(function(){verify_id
+		id=$(this).attr("id");
+		id=id.split("_");
+		id=id.pop();
+		$.post("admin-set_attrs-sort.html",{"id":id,"val":$("#sort_val_"+id).val()},function(rs){
+			if(rs.isOk)
+			{
+				ALERT('设置成功！');
+				$("#attrs_list").load("admin-set_attrs-list.html?tid="+$("input[name=tid]:checked").val());
+			}
+			else
+				alert(rs.msg);
+		},"json");
+	});
+	
+	//点击编辑按钮
+	$(".selfDo").click(function(event){
+		event.preventDefault();
+		event.stopPropagation();
+		$("#attrAdd").load($(this).attr("href"));
+	});
+	
+	fs={};
+	fs.isOk=function(rs){
+		
+		//alert(rs.isOk);
+		if(rs.isOk)
+		{
+			artDialog.get("attrs_list").reload();
+		}
+		else
+			alert(rs.msg);
+			
+	};
+	
+	$(".ajaxDel").ajaxDel(fs);
+	
+	cs=$("#class_list li span ");
+	cs.each(function(i){ l=$(this).attr("level"); str="<span style='color:#eee;'>|</span>"; v=$(this).html(); for(var i=0;i<=l;i++){ if(i>0) str+="&nbsp; "; } $(this).html(str+v); });
+});
+</script>

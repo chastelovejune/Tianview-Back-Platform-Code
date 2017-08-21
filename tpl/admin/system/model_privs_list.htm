@@ -1,0 +1,26 @@
+<a href="admin-model-privs_add-<?=$model_id;?>.html" class="button ajaxDialog" id="priv_add">+添加权限</a>
+<?php if($privs){ ?>
+          <div id="class_list" style="line-height:25px; width:550px;"><?php foreach($privs as $c){ ?>
+          <li style="line-height:35px; padding-left:15px; list-style:none; border-bottom:1px solid #eee; width:99%; margin:auto;"><center style="width:20px; color:#999; float:left;"><?=$c['priv_id'];?></center> &nbsp;  &nbsp; <?=$c['name'];?>(<?=$c['key'];?>)</span>&nbsp;<!--<label style="width:80px; text-align:left; display:inline-block;"><input type="text" id="sort_val_<?=$c['attr_id'];?>" size="5" style="width:25px; height:22px; line-height:22px;" value="<?=$c['sort'];?>" name="set_sort_<?=$c['attr_id'];?>"  /><input type="button" id="sort_set_<?=$c['attr_id'];?>" class="sort_set" style="height:27px; line-height:27px; width:35px; background:#fff; color:#000;  margin:5px; line-height:25px; padding:0px; border:1px solid #ccc; border-radius:5px; background:#eee; cursor:pointer;" name="set_sort" value="排序" /></label>--><label class="op" style="width:90px;  color:#999; float:right;"><a href="admin-model-privs_add-<?=$model_id;?>.html?priv_id=<?=$c['priv_id'];?>" title="编辑" class="selfDo editPriv">编辑</a>&nbsp; <a href="admin-model-privs_del-<?=$model_id;?>.html?priv_id=<?=$c['priv_id'];?>" class="ajaxDel">删除</a></label></li><?php } ?></div><?php }else{ ?><p /><div style="text-align:center;">暂无属性!</div><?php } ?>
+<script>
+$(function()
+{
+	$("#priv_add,.editPriv").ajaxDialog({"id":"privs_add"});
+	
+	fs={};
+	fs.isOk=function(rs){
+		
+		//alert(rs.isOk);
+		if(rs.isOk)
+		{
+			artDialog.get("privs_list").reload();
+		}
+		else
+			alert(rs.msg);
+			
+	};
+	
+	$(".ajaxDel").ajaxDel(fs);
+	
+});
+</script>

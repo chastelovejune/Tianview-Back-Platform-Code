@@ -1,0 +1,24 @@
+<table width="450" border="0" cellspacing="1" cellpadding="5" id="xxx";>
+  <tr>
+    <td colspan="2" style="text-align:right;"><input type="radio" name="gl_type" value="radio" />单选 <input type="radio" name="gl_type" value="checkbox" />多选</td></tr><tr><td><table width="150" border="0" cellspacing="1" cellpadding="5" overflow="scroll">
+  <?php foreach($models as $k=>$v){ ?><tr>
+    <td align="left" title="点击选择属性" style="cursor:pointer; height:35px; height:35px; border-bottom:1px solid #ddd; " class="mods" id="<?=$v['mod_id'];?>"><?=$v['mod_name'];?>&nbsp;</td>
+  </tr>
+  <?php } ?>
+</table>
+</td>
+    <td id="gl_attr_list">&nbsp;</td>
+  </tr>
+</table>
+<script>
+$(function(){
+	
+	//单击处理
+	$(".mods").click(function(){
+		
+		$("#gl_attr_list").load('admin-model-attrs_gl_get-'+$(this).attr("id")+'.html');
+	
+	});
+
+});
+</script>

@@ -1,0 +1,40 @@
+<div class="right_content">
+<link rel="stylesheet" href="/tpl/admin/js/editor/themes/default/default.css" />
+<script charset="utf-8" src="/tpl/admin/js/editor/kindeditor-min.js"></script>
+<script charset="utf-8" src="/tpl/admin/js/editor/lang/zh_CN.js"></script>
+<br/>
+	<form action="admin-product-<?=$mod_key;?>-add-<?=$id;?>.html?store_id=<?=$store_id;?>">
+		<?=$options;?>
+	
+	<br/>
+
+	<input type="button" class="button" value="提交" id="do_button" style="width:30" />
+	<input type="hidden" id="query_str" name="query_str" value="<?=$query_str;?>" />
+</form>
+<br/>
+</div>
+<script>
+var query_str="<?=$query_str;?>";
+$(function(){
+	
+	fs={};
+	
+	fs.isOk=function(rs){
+		
+		if(rs.isOk)
+		{
+			if(rs.url)
+				location.replace(rs.url);
+			else
+				location.replace('admin-product-<?=$mod_key;?>-list.html'+(query_str?'?'+query_str:''));
+		}
+		else
+			alert(rs.msg);
+	
+	};
+
+	
+	$("#do_button").ajaxSubmit(fs);
+
+});
+</script>

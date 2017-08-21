@@ -1,0 +1,28 @@
+<div class="right_content" >
+<form action="" id="mod_add">
+<br /><br />
+<table width="450"  border="0" class="content_table" align="center" cellspacing="5" cellpadding="3" >
+  <tr id="memo">
+    <td height="35" width="77" align="right" style="color:green" >用户名</td>
+    <td align="left"><input type="text" name="admin_name" placeholder="输入用户名" maxlength="18" reg="^.{2,15}$" value="" /></td>
+     <td style="color:green">*提示:用户名2-15个字符</td>
+  </tr>
+  <tr id="memo">
+    <td height="35" width="77" align="right"style="color:green" >密码</td>
+    <td align="left"><input type="password" name="passwd" placeholder="输入密码" maxlength="18" reg="^\w{8,}$" value="" /></td>
+    <td style="color:green">*提示:数字,字母,符号八位以上的任意两种组合</td>
+  </tr>
+  <tr id="memo">
+<td height="35" width="77" align="right" style="color:green">验证码</td>
+<td align="left">
+<input type="text" name="validate" value="" size=20> 
+<td>
+<img  title="点击刷新" src="ROOT_PATH/inc/code.num.php" align="absbottom" onclick="this.src='ROOT_PATH/inc/code.num.php?'+Math.random();"></img>
+</td>
+</td>
+</tr>
+  <tr id="memo"><td colspan="3">
+  <div style="width:60px;height:30px;background-color:#4c9ed9;margin-left:120px;margin-top:5px;margin-bottom:5px"><a class="button ajaxSubmit" id="submit_model" style="color:white">登录</a></div><br /></span></td></tr>
+</table>
+</form>
+</div>

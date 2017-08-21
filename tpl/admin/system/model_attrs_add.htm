@@ -1,0 +1,148 @@
+<form id="add_attr_form" name="add_attr_form" method="post" style="margin:0px;" action="admin-model-attrs_add-<?=$model_id;?>.html?product_id=<?=$product_id;?>"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+
+  <tr>
+
+    <td valign="top"><table width="100%" border="0"cellpadding="0" cellspacing="0">
+
+      <tr>
+
+        <td class="AR" height="55" width="25%">名称：</td>
+
+        <td><label>
+
+          <input name="name" value="<?=isset($attr['name'])?$attr['name']:"";?>" type="text" reg="^.{2,25}$" placeholder="名称必填，2-25个字符！" id="name" />
+
+        </label></td>
+
+      </tr>
+      
+      <tr>
+
+        <td class="AR" height="55" width="25%">标识：</td>
+
+        <td><label>
+
+           <input name="key" value="<?=isset($attr['key'])?$attr['key']:"";?>" type="text" reg="^.{2,25}$" placeholder="key必填，2-25个字符！" id="key" />
+
+        </label></td>
+
+      </tr>
+
+      <tr>
+
+        <td width="25%" height="45" class="AR">输入类型：</td>
+
+        <td style="line-height:25px;"><input name="type" <?php if(isset($attr["type"])&&($attr["type"]=="text")){ ?>checked<?php } ?> type="radio" value="text" />文本框&nbsp; <input name="type" type="radio" value="radio" <?php if(isset($attr["type"])&&$attr["type"]=="radio"){ ?>checked<?php } ?> />[选择]单选&nbsp; <!--<input name="type" <?php if(isset($attr["type"])&&$attr["type"]=="checkbox"){ ?>checked<?php } ?> type="radio" value="checkbox" />选择[多选]&nbsp;--> <input name="type" <?php if(isset($attr["type"])&&$attr["type"]=="editor"){ ?>checked<?php } ?>  type="radio" value="editor" />编辑器 &nbsp; <input name="type" <?php if(isset($attr["type"])&&$attr["type"]=="file"){ ?>checked<?php } ?> type="radio" value="file" />图片上传&nbsp;<input name="type" <?php if(isset($attr["type"])&&$attr["type"]=="memo"){ ?>checked<?php } ?> type="radio" value="memo" />内容 &nbsp; <input name="type" <?php if(isset($attr["type"])&&$attr["type"]=="gl"){ ?>checked<?php } ?> type="radio" id="gl" value="gl" href="admin-model-attrs_gl-<?=$model_id;?>.html?attr_id=<?=isset($attr["attr_id"])?$attr["attr_id"]:'';?>" />关联</td>
+
+      </tr>
+      <tr>
+
+        <td width="25%" height="45" class="AR">长度：</td>
+
+        <td style="line-height:25px;"><input name="length" value="<?=isset($attr['length'])?$attr['length']:"";?>" type="text" reg="^.{1,25}$" placeholder="长度必填，1-25个字符！" id="length" /></td>
+
+      </tr>
+      <tr>
+
+        <td width="25%" height="45" valign="top" class="AR">默认：</td>
+
+        <td><input name="def" value="<?=isset($attr['def'])?$attr['def']:"";?>" type="text" id="def" /></td>
+
+      </tr>
+      <!--<tr>
+
+        <td width="25%" height="45" class="AR">默认：</td>
+
+        <td style="line-height:25px;"><input name="def" value="<?=isset($attr['def'])?$attr['def']:"";?>" type="text" id="def" /></td>
+
+      </tr>-->
+       <tr>
+
+        <td width="25%" height="45" valign="top" class="AR">选项：</td>
+
+        <td><textarea cols="45" name="options" id="options" rows="5"><?=isset($attr['options'])?$attr['options']:"";?></textarea><br /><span class="help">*如果是单选，用&隔开可选项！</span></td>
+
+      </tr>
+      <tr>
+
+        <td width="25%" height="45" class="AR">正则检测：</td>
+
+        <td><label>
+
+          <input name="reg" value="<?=isset($attr['reg'])?$attr['reg']:"";?>" type="text" id="name" />
+
+        </label></td>
+
+      </tr>
+      <tr>
+
+        <td width="25%" height="45" class="AR">输入提示：</td>
+
+        <td><label>
+
+          <input name="placeholder" value="<?=isset($attr['placeholder'])?$attr['placeholder']:"";?>" type="text" id="placeholder" />
+
+        </label></td>
+
+      </tr>
+
+      <tr>
+
+        <td height="45" class="AR">&nbsp;</td>
+
+        <td><label>
+		<input type="checkbox" <?php if(isset($attr["require"])&&$attr["require"]!="0"){ ?>checked<?php } ?> name="require" id="require" value="1" />必填&nbsp; &nbsp; <input type="checkbox" name="show_list" id="show_list" <?php if(isset($attr["show_list"])&&$attr["show_list"]){ ?>checked<?php } ?> value="1" />列表显示&nbsp; &nbsp; <input type="checkbox" name="is_edit" id="is_edit" <?php if((isset($attr["is_edit"])&&$attr["is_edit"])||!$attr){ ?>checked<?php } ?> value="1" />充许编辑<br /><br />
+        <button class="button_hong" type="button" id="attr_add_button" name="attr_add_button">提交</button><p />
+
+        <input type="hidden" name="attr_id" id="attr_id" value="<?=isset($attr['attr_id'])?$attr['attr_id']:"";?>" />
+
+		<!--<input type="hidden" name="pid" id="pid" value="<?=$pid?>" />
+
+		<input type="hidden" name="tag" id="tag" value="<?=$tag?>" />
+
+		<input type="hidden" name="level" id="level" value="<?=$level?>" />
+
+		<input type="hidden" name="pids" id="pids" value="<?=$pids?>" />
+
+		<input type="hidden" name="do" id="do" value="add" />-->
+
+		</label></td>
+
+      </tr>
+
+    </table></td>
+
+  </tr>
+
+</table>
+
+            </form>
+
+<script>
+
+$(function(){
+	
+	/*属性添加操作*/
+	fs={};
+
+	fs.isOk=function(rs){
+		
+		if(rs.isOk)
+		{
+			//alert('asfaf');
+			$("#attrs_add_close").click();
+			artDialog.get("attrs_list").reload();
+			//alert("恭喜，操作成功！");
+		}
+		else
+			alert(rs.msg);
+
+	};
+
+	$("#attr_add_button").ajaxSubmit(fs);
+	
+	$("#gl").ajaxDialog();
+
+})
+
+</script>

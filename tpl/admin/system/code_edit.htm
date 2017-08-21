@@ -1,0 +1,26 @@
+<div class="right_content">
+<form action="admin-model-add-<?=$id;?>.html" id="mod_add">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="35" width="140">路径</td>
+    <td><?=$info["products_files_path"];?></td>
+  </tr>
+  <tr>
+    <td height="35" width="140">内容</td>
+    <td><textarea style="width:90%; text-align:left; height:450px; padding:15px;"><?=$code;?></textarea></td>
+  </tr>
+  <tr><td colspan="2"><a class="button" id="submit_model">提交</a></td></tr>
+</table>
+</form>
+<script>
+$("#submit_model").ajaxSubmit();/*click(function(){
+	
+	$.post("admin-model-add.html",$("#mod_add").serialize(),function(rs){
+		
+		alert(rs.msg);
+	
+	},"json");
+
+});*/
+</script>
+</div>

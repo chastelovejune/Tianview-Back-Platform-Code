@@ -1,0 +1,48 @@
+<form action="admin-product-admin-passwd-<?=$id;?>.html" id="mod_add">
+<table width="250" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="35" width="40">密码</td>
+    <td><input type="text" name="passwd" id="passwd" placeholder="请输入8位以上密码" maxlength="18"  value="" /></td>
+  </tr><div id="tishi" style="color:red;"></div>
+  <tr>
+    <td height="35" width="40">标识</td>
+    <td><input type="text" name="passwd_agin" id="passwd_agin" placeholder="两次输入请保持一致" maxlength="18"  value="" /></td>
+  </tr>
+  <tr><td colspan="2"><a class="button" id="submit_model">提交</a></td></tr>
+</table>
+</form>
+<script>
+$(function(){
+	fs={};
+	fs.clickBefor=function(){
+		//正则验证是否是数字字母符号的组合
+	var check=/^((?=.*?\d)(?=.*?[A-Za-z])|(?=.*?\d)(?=.*?[~！@#$%^&*()_<>])|(?=.*?[A-Za-z])(?=.*?[~！@#$%^&*()_<>]))[\dA-Za-z~！@#$%^&*()_<>]+$/;
+		if($("#passwd").val().length<8){
+			$("#tishi").text("*密码必须八位以上");
+			return false;
+		}
+		if($("#passwd_agin").val().length<8){
+			$("#tishi").text("*确认密码必须八位以上");
+			return false;
+		}
+		if(!check.test($("#passwd").val())){
+			$("#tishi").text("*密码必须为数字，字母，符号任意2中组合");
+			return false;
+		}
+		if(!check.test($("#passwd_agin").val())){
+			$("#tishi").text("*确认密码必须为数字，字母，符号任意2中组合");
+			return false;
+		}
+		if($("#passwd").val()!=$("#passwd_agin").val())
+		{
+			ALERT("两次密码输入不一致！");
+			return false;
+		}
+		$("#tishi").text("验证成功!");
+		$("#tishi").css("color","green");
+		return true;
+	
+	};
+	$("#submit_model").ajaxSubmit(fs);
+});
+</script>

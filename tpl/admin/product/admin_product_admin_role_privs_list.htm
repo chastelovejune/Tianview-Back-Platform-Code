@@ -1,0 +1,76 @@
+<div class="right_content">
+<label style="width:20px;height:20px;background-color:#3879D9;"><a href="admin-product-<?=$mod_key;?>-add.html<?=$query_str?'?'.$query_str:'';?>" class="button" style="color:white;padding:4px 10px 4px 10px;">添加</a></label>
+<?php if($products){ ?>
+<br />
+<table width="100%" class="content_table" border="1" bordercolor=＂#000000＂cellspacing="1" cellpadding="5" align="center">
+  <tr id="title">
+
+     <td height="22">ID</td>
+     <td height="22">权限名称</td>
+     <td height="22">模块标识</td>
+     <td height="22">方法标识</td>
+     
+
+
+  
+    <td height="22">排序</td>
+    <td height="22">操作</td>
+      
+  </tr>
+  
+  <?php 
+  //处理关联数据 
+  require_once "lib/model.php";
+    $model=new model;
+   for ($j=0; $j <count($products); $j++) { 
+        $group=$products[$j]['group'];
+        $sql="select privs_group_name from privs_group where privs_group_id=".$group;
+        $res=$model->db->query($sql);
+        $group_array[]=$res[0];
+   }
+    for($i=0;$i<count($products);$i++){
+        echo "<tr id='demo'>";
+        echo "<td>".$products[$i]['admin_role_privs_id']."</td>";
+        echo "<td>".$products[$i]['privs_name']."</td>";
+       
+        echo "<td>".$products[$i]['model_key']."</td>";
+   
+        echo "<td>".$products[$i]['act_key']."</td>";
+      
+    
+      
+      
+      
+        echo '<td><input type="input" size="1" class="is_sort" data-id='.$products[$i]['admin_role_privs_id'].' name="is_sort" placeholder="未设" value='.$products[$i]['sort_by'].'>&nbsp;<input type="button" class="set_sort" value="更新" style="background-color:#32c170;color:white"/></td>';
+
+        echo '<td><label style="width:20px;height:20px;background-color:#3879D9;"><a href="admin-product-'.$products[$i]['mod_key'].'-add-'.$products[$i]['admin_role_privs_id'].'.html" style="color:white;padding:4px 10px 4px 10px;">编辑</a></label>&nbsp; <label style="width:20px;height:20px;background-color:red;"><a href="admin-product-'.$products[$i]['mod_key'].'-del-'.$products[$i]['admin_role_privs_id'].'.html" class="ajaxDel" style="color:white;padding:4px 10px 4px 10px;">删除</a></label></td>';;
+      }
+        echo "</tr>";
+      ?>
+    
+
+
+</table>
+<br />
+<?php }else{ ?><p />
+暂无数据!
+<?php } ?></div>
+<script>
+var mod="<?=$mod_key;?>";
+$(function(){
+	
+	$(".set_sort").click(function(){
+		var obj=$(this).prev("input");
+    if(typeof(obj.data("id"))=='number'){
+		$.get("admin-product-"+mod+"-set_sort-"+obj.data("id")+".html?sort="+obj.val(),function(rs){
+			alert(rs.msg);
+		},"json");
+  }else{
+    alert("你输入的格式不正确，请输入数字!");
+  }
+	
+	});
+
+});
+
+</script>

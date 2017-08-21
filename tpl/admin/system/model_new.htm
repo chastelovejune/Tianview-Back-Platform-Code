@@ -1,0 +1,24 @@
+<form action="admin-model-add-<?=$id;?>.html?product_id=<?=$product_id;?>" id="mod_add">
+<table width="250" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="35" width="40">名称</td>
+    <td><input type="text" name="mod_name" placeholder="输入名称(2-15字符)" maxlength="18" reg="^.{2,15}$" value="<?=isset($info['mod_name'])?$info['mod_name']:"";?>" /></td>
+  </tr>
+  <tr>
+    <td height="35" width="40">标识</td>
+    <td><input type="text" name="mod_key" placeholder="输入标识(3-15个英文字符)" maxlength="18" reg="^\w{2,18}$" value="<?=isset($info['mod_key'])?$info['mod_key']:"";?>" /></td>
+  </tr>
+  <tr><td colspan="2"><a class="button" id="submit_model">提交</a></td></tr>
+</table>
+</form>
+<script>
+$("#submit_model").ajaxSubmit();/*click(function(){
+	
+	$.post("admin-model-add.html",$("#mod_add").serialize(),function(rs){
+		
+		alert(rs.msg);
+	
+	},"json");
+
+});*/
+</script>
